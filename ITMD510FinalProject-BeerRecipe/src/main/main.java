@@ -6,37 +6,40 @@ import SQL.CreateTables;
 import SQL.RunSqlStatement;
 import connections.Connector;
 import connections.StartUpCheck;
+import user.CreateNewUser;
 import user.Login;
 import user.User;
 
 public class main {
 
 	public static void main(String[] args) {
+		
+		Connector myConnector = new Connector();		
+		Connection conn = myConnector.OpenConnection();
 
+		StartUpCheck newStart = new StartUpCheck();
 		
-		Connector conn = new Connector();
-		
-		Connection sqlConnection = conn.OpenConnection();
-		
-		CreateTables tables = new CreateTables();
-
-		StartUpCheck firstRun = new StartUpCheck();
-		
-		firstRun.CheckTableSQLTables(sqlConnection);
+		newStart.StartUp(conn); //runs before first run of the software to make sure all tables are set up and working.
 		
 		
+		CreateNewUser newUser = new CreateNewUser();
 		
-		User myNewUser = new User();
+		newUser.newUser(conn, "", "TestUser@user.com", "Test", "User", "TestUser");
 		
-		myNewUser = myNewUser.newUser(sqlConnection, "kulm", "kulm@hawk.iit.edu", "Karl", "Ulm", "gohawks");
 		
-		String Sql = myNewUser.UserToSqlInsert(myNewUser);
+		Login newLogin = new Login();
 		
-		RunSqlStatement toSQL = new RunSqlStatement();
+		Boolean valid = newLogin.isValidPassowrd("TestUser", "TestUser", conn);
 		
-		toSQL.RunStatement(sqlConnection, Sql);
+		System.out.println(valid);
 		
-		conn.Close(sqlConnection);
+		if (valid == true){
+			System.out.println("we in Bitches");
+		}
+		
+		
+		
+		myConnector.Close(conn);
 		
 		
 		

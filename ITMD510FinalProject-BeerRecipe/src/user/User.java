@@ -23,56 +23,23 @@ public class User {
 	Boolean isAdmin;
 	
 	
-	public int getNewUserID(Connection conn){
-		
-	     int lastUserID = 0;
-		
-		
-		try{		
-			 Statement stmt = null;
-			 
-			 String query = "SELECT * FROM 510labs.k_ulm_fp_users";
-			 
-			 stmt = conn.createStatement();
-			 ResultSet rs = stmt.executeQuery(query);
-		     
-			 rs.last();
-	    	 lastUserID = rs.getInt("UserID") + 1;
-	    	 
-		     if (lastUserID == 0){
-		    	 lastUserID = 1000;
-		    
-		     }else{
-		    	    	 
-		    	 rs.last();
-		    	 lastUserID = rs.getInt("UserID") + 1;
-			 }
-
-		 }catch(SQLException se){
-			 //Handle errors for JDBC
-			 se.printStackTrace();
-			 
-		 }catch(Exception e){
-			 //Handle errors for Class.forName
-			 e.printStackTrace();
-		 }
-		return lastUserID;
-		
-	}
+	/*
+	 * The newUser Method will populate the user object to hold all 
+	 * the correct information for the new user
+	 */
 	
 	public User newUser(Connection conn,String userName, String userEmail, String userFristName, String userLastName, String userPassword){
 		
 		User newUser = new User();
+		Login newLogin = new Login();
 		
-		int newUserID = newUser.getNewUserID(conn);
+		int newUserID = newLogin.getNewUserID(conn);
 		
 		newUser.setUserID(newUserID);
 		newUser.setUserName(userName);
 		newUser.setUserEmail(userEmail);
 		newUser.setUserFristName(userFristName);
 		newUser.setUserLastName(userLastName);
-		
-		Login newLogin = new Login();
 		
 		newLogin.userSignUp(userPassword, newUser);
 		
@@ -83,6 +50,8 @@ public class User {
 		
 		return newUser;
 	}
+	
+	
 	
 	public String UserToSqlInsert(User newUser){
 		
@@ -96,16 +65,12 @@ public class User {
 				"NOW() ," +
 				"'" + newUser.getIsAdmin() + "')";
 				
-		System.out.println(sqlInsertIntoUsersTable);
-		
-		
-		
+//		System.out.println(sqlInsertIntoUsersTable);
 		
 		return sqlInsertIntoUsersTable;
 	}
 	
-	
-	
+
 	/*
 	 * Getters and Setter below
 	 */

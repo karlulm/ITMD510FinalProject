@@ -1,6 +1,10 @@
 package user;
 
 import java.security.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Login {
 
@@ -15,7 +19,11 @@ public class Login {
 	
 	public User userSignUp( String password, User newUser) {
 		
+		System.out.println("Passwprd Pre Hash round 1: " + password);
+		
 		String saltedPassword = SALT + password;
+		
+		System.out.println("Salted Passwprd Pre Hash round 1: " + saltedPassword);
 		
 		String hashedPassword = generateHash(saltedPassword);
 		
@@ -23,29 +31,6 @@ public class Login {
 		
 		return newUser;
 	}
-	
-	
-	/*
-	
-	public Boolean login(String username, String password) {
-		Boolean isAuthenticated = false;
-
-		// remember to use the same SALT value use used while storing password
-		// for the first time.
-		String saltedPassword = SALT + password;
-		String hashedPassword = generateHash(saltedPassword);
-
-		String storedPasswordHash = DB.get(username);
-		
-		if(hashedPassword.equals(storedPasswordHash)){
-			isAuthenticated = true;
-		}else{
-			isAuthenticated = false;
-		}
-		return isAuthenticated;
-	}
-	
-	*/
 	
 	
 	/*
@@ -76,6 +61,129 @@ public class Login {
 		return hash.toString();
 	}
 
+	
+	
+	
+	public Boolean isValidPassowrd(String username, String password,Connection conn) {
+	
+		Boolean isAuthenticated = false;
+		
+		try{
+			
+			Statement stmt = null;
+			 
+			String saltedPassword = SALT + password;
+			
+			String hashedPassword = generateHash(saltedPassword);
+			
+				
+			String query = "SELECT * FROM 510labs.k_ulm_fp_users WHERE UserName = '" + username + "'";
+			 
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			
+			String storedPasswordHash = rs.getString("UserPassword");
+			
+	    	 
+			if(hashedPassword.equals(storedPasswordHash)){
+				isAuthenticated = true;
+			}else{
+				isAuthenticated = false;
+			}
+
+		 }catch(SQLException se){
+			 //Handle errors for JDBC
+			 se.printStackTrace();
+			 
+		 }catch(Exception e){
+			 //Handle errors for Class.forName
+			 e.printStackTrace();
+		 }	
+		
+		return isAuthenticated;
+	}
+	
+	
+	
+	public int getNewUserID(Connection conn){
+		
+		int lastUserID = 0;
+		
+		try{		
+			
+			 Statement stmt = null;
+			 
+			 String query = "SELECT * FROM 510labs.k_ulm_fp_users";
+			 
+			 stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(query);
+		     
+			 rs.last();
+	    	 lastUserID = rs.getInt("UserID") + 1;
+	    	 
+		     if (lastUserID == 0){
+		    	 lastUserID = 1000;
+		    
+		     }else{
+		    	    	 
+		    	 rs.last();
+		    	 lastUserID = rs.getInt("UserID") + 1;
+			 }
+
+		 }catch(SQLException se){
+			 //Handle errors for JDBC
+			 se.printStackTrace();
+			 
+		 }catch(Exception e){
+			 //Handle errors for Class.forName
+			 e.printStackTrace();
+		 }
+		return lastUserID;
+		
+	}
+	
+	/*
+	 * verifyUser will check to make sure no null values got added to the User object
+	 */
+	
+	public boolean verifyUser(User newUser){
+		
+		boolean isUserInfoValid = true;
+		
+		if (newUser.getUserID() == 0){
+			
+			isUserInfoValid = false;
+		}
+		
+		if (newUser.getUserName().equals(null) || newUser.getUserName().equals("")){
+			
+			isUserInfoValid = false;
+		}
+		
+		if (newUser.getUserEmail().equals(null)){
+			
+			isUserInfoValid = false;
+		}
+		
+		if (newUser.getUserFristName().equals(null)){
+			
+			isUserInfoValid = false;
+		}
+		
+		if (newUser.getUserLastName().equals(null)){
+			
+			isUserInfoValid = false;
+		}
+		if (newUser.getUserPassword().equals(null)){
+			
+			isUserInfoValid = false;
+		}		
+		
+		return isUserInfoValid;
+	}
+	
+	
 	
 	
 }
