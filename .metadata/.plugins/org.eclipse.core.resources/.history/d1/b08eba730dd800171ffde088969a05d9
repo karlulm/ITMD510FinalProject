@@ -1,0 +1,102 @@
+package connections;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import SQL.CreateTables;
+import SQL.RunSqlStatement;
+import user.Login;
+
+
+public class StartUpCheck {
+	
+	public void StartUp(Connection conn){
+		
+		StartUpCheck firstRun = new StartUpCheck();
+		
+		firstRun.CheckTableSQLTables(conn);
+		
+		firstRun.CheckFirstUser(conn);
+		
+	}
+	
+	
+	
+	public void CheckTableSQLTables(Connection conn){
+		
+		CreateTables createtable = new CreateTables();
+		
+		/*
+		 * Checks to see if the User table exists in SQL already. If not it creates the
+		 * Table
+		 */
+		
+		System.out.println(createtable.SeeIfTableExisits(conn,"k_ulm_fp_users").equals(true));
+
+		if (createtable.SeeIfTableExisits(conn,"k_ulm_FP_Users").equals(false)){
+			
+			System.out.println("ADIDS");
+			
+			String createUserTable = createtable.getCreateUserTableScript();
+			
+			createtable.runCreateStatment(conn, createUserTable);			
+		}
+		
+		System.out.println("tits");
+		
+		System.out.println(createtable.SeeIfTableExisits(conn,"k_ulm_FP_Fermentables"));
+		
+		if (createtable.SeeIfTableExisits(conn,"k_ulm_FP_Fermentables").equals(true)){
+			
+			String createFermTable = createtable.getCreateUserTableScript();
+			
+			createtable.runCreateStatment(conn, createFermTable);		
+			
+			System.out.println("Created Ferm Table yay");
+		}
+		
+	}
+	
+	public void CheckFirstUser(Connection conn){
+
+		try{		
+				
+			Statement stmt = null;
+				 
+			String query = "SELECT * FROM 510labs.k_ulm_fp_users";
+				 
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+		    	 
+		    if(!rs.isBeforeFirst()){
+		    		 
+		    	Login newLogin = new Login();
+		    			
+		    	String Sql = "INSERT INTO k_ulm_FP_Users VALUES(" +
+		    			"'1000', " +
+		    			"'BeerAdmin' ," +
+		    			"'BeerAdmin@beer.com' ," +
+		    			"'Beer' ," +
+		    			"'Admin' ," +
+		    			"'" + newLogin.generateHash("Go HawksBeerRocks1234!") + "' ," +
+		    			"NOW() ," +
+		    			"'true')";
+		    		
+		    	RunSqlStatement toSQL = new RunSqlStatement();
+		    	toSQL.RunStatement(conn, Sql);
+		    }
+		    
+			}catch(SQLException se){
+				 //Handle errors for JDBC
+				 se.printStackTrace();
+				 
+			}catch(Exception e){
+				 //Handle errors for Class.forName
+				 e.printStackTrace();
+			}			
+	}
+		
+}
+

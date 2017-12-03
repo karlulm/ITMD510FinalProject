@@ -13,14 +13,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import BeerRecipe.Hops;
 import BeerRecipe.Yeasts;
 
 public class YeastAPI {
 	
-	   public static List<Hops> getHopAPI(){
+	   public static List<Yeasts> getYeastsAPI(){
 		   
-		   String urlToRead = "hhttp://api.brewerydb.com/v2/yeasts?key=cc0090d9b6bfb3ff92bcb9cdaa15a599";
+		   String urlToRead = "http://api.brewerydb.com/v2/yeasts?key=cc0090d9b6bfb3ff92bcb9cdaa15a599";
 		   
 		   List<Yeasts> yeastsList = new ArrayList<Yeasts>();
 		   
@@ -56,15 +55,25 @@ public class YeastAPI {
 					
 					int yeastID = JasonYeasts.getInt("id"); 
 					
-					String yeastName = JasonYeasts.getString("name");
+					String yeastNames = JasonYeasts.getString("name");
 					
 					String yeastCatagry = JasonYeasts.getString("categoryDisplay");
 					
+					
+					
+					String yeastType = null;
+					
+					if (JasonYeasts.has("yeastType")){
+						
+						yeastType =JasonYeasts.getString("yeastType");
+						
+					}
+					
 					String yeastDescription = null;
 					
-					if (JasonYeasts.has("productId")){
+					if (JasonYeasts.has("description")){
 						
-						yeastDescription =JasonYeasts.getString("productId");
+						yeastDescription =JasonYeasts.getString("description");
 						
 					}
 					
@@ -76,11 +85,11 @@ public class YeastAPI {
 						
 					}
 					
-					String yeastYeastFormatn = null;
+					String yeastFormatn = null;
 					
 					if (JasonYeasts.has("yeastFormat")){
 						
-						yeastYeastFormatn =JasonYeasts.getString("yeastFormat");
+						yeastFormatn =JasonYeasts.getString("yeastFormat");
 						
 					}
 					
@@ -93,14 +102,16 @@ public class YeastAPI {
 					}
 			
 					
-					addHop.setHopsID(hopID);
-					addHop.setHopName(hopName);
-					addHop.setCategoryDisplay(hopCatagry);
-					addHop.setHopDescription(hopDescription);
-					addHop.setCountryisoCode(hopCounryIsoCode);
-					addHop.setCountryName(hopCounryName);
+					addYeast.setYeastID(yeastID);
+					addYeast.setYeastNames(yeastNames);
+					addYeast.setYeastCatagry(yeastCatagry);
+					addYeast.setYeastType(yeastType);
+					addYeast.setYeastDescription(yeastDescription);
+					addYeast.setYeastSupplier(yeastSupplier);
+					addYeast.setYeastYeastFormatn(yeastFormatn);
+					addYeast.setYeastCatagry(yeastCategoryDisplay);
 					
-					hopList.add(addHop);
+					yeastsList.add(addYeast);
 					
 				}
 		      
@@ -116,6 +127,7 @@ public class YeastAPI {
 				e.printStackTrace();
 			}	
 			
-			return hopList;
+			return yeastsList;
+	   }
 
 }

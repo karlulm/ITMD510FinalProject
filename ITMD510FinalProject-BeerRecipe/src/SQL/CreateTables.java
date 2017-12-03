@@ -18,8 +18,28 @@ public class CreateTables {
 			"AccountCreatedOn Date," +
 			"IsAdmin VARCHAR(255))";
 	
-	public String getCreateUserTable() {
+	
+	
+	String createFermentablesTable = "CREATE TABLE k_ulm_FP_Fermentables (" +
+			"FermentablesID INT NOT NULL PRIMARY KEY, " +
+			"FermentablesName VARCHAR(255), " +
+			"Catagory VARCHAR(255), " +
+			"CategoryDisplay VARCHAR(255), " +
+			"Description TEXT, " +
+			"CharacteristicsID VARCHAR(255), " +
+			"CharacteristicsName VARCHAR(255),"  +
+			"CharacteristicsDescription VARCHAR(255), " +
+			"CountryIsoCode VARCHAR(255), " +
+			"CountryName VARCHAR(255) )";
+	
+	
+	
+	public String getCreateUserTableScript() {
 		return createUserTable;
+	}
+	
+	public String getCreateFermTableScript() {
+		return createFermentablesTable;
 	}
 	
 	
@@ -33,7 +53,7 @@ public class CreateTables {
 			 	 
 			 stmt.executeUpdate(sqlStatment);
 			 
-			 System.out.println("Created User table...");
+			 System.out.println("Created table...");
 			 
 		 }catch(SQLException se){
 			 //Handle errors for JDBC
@@ -55,6 +75,8 @@ public class CreateTables {
 				ResultSet rs = md.getTables(null, null, "%", null);
 
 				while (rs.next()) {
+					
+					//System.out.println(rs.getString(3));
 					
 					if (rs.getString(3).equals(tableName)){
 						

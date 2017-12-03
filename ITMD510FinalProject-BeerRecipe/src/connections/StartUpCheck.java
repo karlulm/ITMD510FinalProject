@@ -35,9 +35,17 @@ public class StartUpCheck {
 
 		if (createtable.SeeIfTableExisits(conn,"k_ulm_FP_Users").equals(true)){
 			
-			String createUserTable = createtable.getCreateUserTable();
+			String createUserTable = createtable.getCreateUserTableScript();
 			
 			createtable.runCreateStatment(conn, createUserTable);			
+		}
+		
+		
+		if (createtable.SeeIfTableExisits(conn,"k_ulm_FP_Fermentables").equals(true)){
+			
+			String createFermTable = createtable.getCreateFermTableScript();
+			
+			createtable.runCreateStatment(conn, createFermTable);		
 		}
 		
 	}

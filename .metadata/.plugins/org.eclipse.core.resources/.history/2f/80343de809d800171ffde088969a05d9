@@ -1,0 +1,92 @@
+package BeerRecipe;
+
+public class Fermentables {
+
+	int fermID;
+	String fermName;
+	String catagory;
+	String categoryDisplay;
+	String description;
+	
+	int fermCharID;
+	String fermCharName;
+	String fermCharDescription;
+	
+	String countryisoCode;
+	String countryName;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * Getters and setters
+	 */
+	public int getFermID() {
+		return fermID;
+	}
+	public void setFermID(int fermID) {
+		this.fermID = fermID;
+	}
+	public String getFermName() {
+		return fermName;
+	}
+	public void setFermName(String fermName) {
+		this.fermName = fermName;
+	}
+	public String getCatagory() {
+		return catagory;
+	}
+	public void setCatagory(String catagory) {
+		this.catagory = catagory;
+	}
+	public String getCategoryDisplay() {
+		return categoryDisplay;
+	}
+	public void setCategoryDisplay(String categoryDisplay) {
+		this.categoryDisplay = categoryDisplay;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getFermCharID() {
+		return fermCharID;
+	}
+	public void setFermCharID(int fermCharID) {
+		this.fermCharID = fermCharID;
+	}
+	public String getFermCharName() {
+		return fermCharName;
+	}
+	public void setFermCharName(String fermCharName) {
+		this.fermCharName = fermCharName;
+	}
+	public String getFermCharDescription() {
+		return fermCharDescription;
+	}
+	public void setFermCharDescription(String fermCharDescription) {
+		this.fermCharDescription = fermCharDescription;
+	}
+	public String getCountryisoCode() {
+		return countryisoCode;
+	}
+	public void setCountryisoCode(String countryisoCode) {
+		this.countryisoCode = countryisoCode;
+	}
+	public String getCountryName() {
+		return countryName;
+	}
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+	
+
+
+}

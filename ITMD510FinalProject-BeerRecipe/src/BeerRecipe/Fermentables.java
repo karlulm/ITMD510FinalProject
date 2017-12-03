@@ -1,5 +1,12 @@
 package BeerRecipe;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import user.User;
+
 public class Fermentables {
 
 	int fermID;
@@ -19,6 +26,74 @@ public class Fermentables {
 	
 	
 	
+	
+	public int getNewFermID(Connection conn){
+		
+		int lastFermID = 0;
+		
+		try{					
+			 Statement stmt = null;
+			 
+			 String query = "SELECT * FROM k_ulm_FP_Fermentables";
+			 
+			 stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(query);
+		     
+			 rs.last();
+	    	 lastFermID = rs.getInt("FermentablesID");
+	    	 
+		     if (lastFermID == 0){
+		    	 lastFermID = 1000;
+		    
+		     }else{
+		    	    	 
+		    	 rs.last();
+		    	 lastFermID = rs.getInt("UserID") + 1;
+			 }
+
+		 }catch(SQLException se){
+			 //Handle errors for JDBC
+			 se.printStackTrace();
+			 
+		 }catch(Exception e){
+			 //Handle errors for Class.forName
+			 e.printStackTrace();
+		 }
+		return lastFermID;
+	}
+	
+	
+	
+	
+	
+	public String FermToSqlInsert(Fermentables newFermentables){
+		
+		String sqlInsertIntoUsersTable = "INSERT INTO k_ulm_FP_Fermentables VALUES(" +
+				"'" + newFermentables.getFermID() + "', " +
+				"'" + newFermentables.getFermName() + "', " +
+				"'" + newFermentables.getCatagory() + "', " +
+				"'" + newFermentables.getCategoryDisplay()+ "', " + 
+				"'" + newFermentables.getDescription() + "', " +
+				"'" +
+				"'" +
+				"'" +
+				"'" +
+				"'" +
+				
+		
+		int fermCharID;
+		String fermCharName;
+		String fermCharDescription;
+		
+		String countryisoCode;
+		String countryName;
+				"NOW() ," +
+				"'" + newUser.getIsAdmin() + "')";
+				
+//		System.out.println(sqlInsertIntoUsersTable);
+		
+		return sqlInsertIntoUsersTable;
+	}
 	
 	
 	
