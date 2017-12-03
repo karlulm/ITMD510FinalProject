@@ -1,7 +1,12 @@
 package main;
 
 import java.sql.Connection;
+import java.util.List;
 
+import BeerRecipe.Fermentables;
+import BeerRecipe.Hops;
+import BreweryDB_APIs.FermentablesAPI;
+import BreweryDB_APIs.HopsAPI;
 import SQL.CreateTables;
 import SQL.RunSqlStatement;
 import connections.Connector;
@@ -13,6 +18,8 @@ import user.User;
 public class main {
 
 	public static void main(String[] args) {
+		
+		/*
 		
 		Connector myConnector = new Connector();		
 		Connection conn = myConnector.OpenConnection();
@@ -41,7 +48,17 @@ public class main {
 		
 		myConnector.Close(conn);
 		
+		*/
 		
+		HopsAPI hop = new HopsAPI();
+		
+		List<Hops> newHops = hop.getHopAPI();
+		
+		FermentablesAPI ferm = new FermentablesAPI();
+		
+		List<Fermentables> newFerm = ferm.getFermentablesAPI();
+		
+		System.out.println(newFerm.get(4).getDescription());
 		
 
 	}

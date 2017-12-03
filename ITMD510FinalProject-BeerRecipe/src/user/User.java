@@ -18,7 +18,7 @@ public class User {
 	String userEmail;
 	String userFristName;
 	String userLastName;
-	String userPassword;
+	String userPassword; 
 	Date accountCreatedOn;
 	Boolean isAdmin;
 	
