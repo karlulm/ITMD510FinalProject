@@ -6,7 +6,7 @@ import SQL.RunSqlStatement;
 
 public class CreateNewUser {
 	
-	public void newUser(Connection conn,String userName, String userEmail, String userFristName, String userLastName, String userPassword){
+	public User newUser(Connection conn,String userName, String userEmail, String userFristName, String userLastName, String userPassword){
 		
 		User myNewUser = new User();
 		
@@ -24,6 +24,8 @@ public class CreateNewUser {
 			toSQL.RunStatement(conn, Sql);
 			
 		}	
+		
+		return myNewUser;
 		
 		
 	}

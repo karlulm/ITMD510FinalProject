@@ -20,92 +20,94 @@ public class HopsAPI {
 	
 	   public static List<Hops> getHopAPI(){
 		   
-		   String urlToRead = "http://api.brewerydb.com/v2/hops?key=cc0090d9b6bfb3ff92bcb9cdaa15a599";
-		   
 		   List<Hops> hopList = new ArrayList<Hops>();
 		   
-			try {
-				
-				StringBuilder result = new StringBuilder();
-				
-				URL url = new URL(urlToRead);
-				
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("GET");
-				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-				
-				String line;
-				
-				while ((line = rd.readLine()) != null) {
+		   for(int j = 1; j < 4; ++j){
+			   
+			   String urlToRead = "https://api.brewerydb.com/v2/hops?p=" + j + "&key=cc0090d9b6bfb3ff92bcb9cdaa15a599&format=json";
+			   
+				try {
 					
-					result.append(line);
-				}
-				rd.close();
-				
-				String JSON_DATA = result.toString();
-				
-				JSONObject obj = new JSONObject(JSON_DATA);
-				JSONArray geodata = obj.getJSONArray("data");
-				int n = geodata.length();
-							
-				for (int i = 0; i < n; ++i) {
+					StringBuilder result = new StringBuilder();
 					
-					Hops addHop = new Hops();
+					URL url = new URL(urlToRead);
 					
-					final JSONObject JasonHops = geodata.getJSONObject(i);
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+					conn.setRequestMethod("GET");
+					BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 					
-					int hopID = JasonHops.getInt("id"); 
+					String line;
 					
-					String hopName = JasonHops.getString("name");
-					
-					String hopCatagry = JasonHops.getString("categoryDisplay");
-					
-					String hopDescription = null;
-					
-					if (JasonHops.has("description")){
+					while ((line = rd.readLine()) != null) {
 						
-						hopDescription =JasonHops.getString("description");
+						result.append(line);
+					}
+					rd.close();
+					
+					String JSON_DATA = result.toString();
+					
+					JSONObject obj = new JSONObject(JSON_DATA);
+					JSONArray geodata = obj.getJSONArray("data");
+					int n = geodata.length();
+								
+					for (int i = 0; i < n; ++i) {
+						
+						Hops addHop = new Hops();
+						
+						final JSONObject JasonHops = geodata.getJSONObject(i);
+						
+						int hopID = JasonHops.getInt("id"); 
+						
+						String hopName = JasonHops.getString("name");
+						
+						String hopCatagry = JasonHops.getString("categoryDisplay");
+						
+						String hopDescription = null;
+						
+						if (JasonHops.has("description")){
+							
+							hopDescription =JasonHops.getString("description");
+							
+						}
+						
+						String hopCounryIsoCode = null;
+						
+						String hopCounryName = null;
+						
+						if (JasonHops.has("country")){
+							
+							//hopCounryIsoCode =  hopList.get(i).(JasonHops.getString("isoCode"));  //JasonHops.get("isoCode");
+							
+							hopCounryIsoCode = JasonHops.getJSONObject("country").getString("isoCode");
+							
+							hopCounryName = JasonHops.getJSONObject("country").getString("displayName");
+						}				
+						
+						addHop.setHopsID(hopID);
+						addHop.setHopName(hopName);
+						addHop.setCategoryDisplay(hopCatagry);
+						addHop.setHopDescription(hopDescription);
+						addHop.setCountryisoCode(hopCounryIsoCode);
+						addHop.setCountryName(hopCounryName);
+						
+						hopList.add(addHop);
 						
 					}
-					
-					String hopCounryIsoCode = null;
-					
-					String hopCounryName = null;
-					
-					if (JasonHops.has("country")){
-						
-						//hopCounryIsoCode =  hopList.get(i).(JasonHops.getString("isoCode"));  //JasonHops.get("isoCode");
-						
-						hopCounryIsoCode = JasonHops.getJSONObject("country").getString("isoCode");
-						
-						hopCounryName = JasonHops.getJSONObject("country").getString("displayName");
-					}				
-					
-					addHop.setHopsID(hopID);
-					addHop.setHopName(hopName);
-					addHop.setCategoryDisplay(hopCatagry);
-					addHop.setHopDescription(hopDescription);
-					addHop.setCountryisoCode(hopCounryIsoCode);
-					addHop.setCountryName(hopCounryName);
-					
-					hopList.add(addHop);
-					
-				}
-		      
-		      
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+			      
+			      
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+		   }
 			
 			return hopList;
-			
 	   }
 
 }

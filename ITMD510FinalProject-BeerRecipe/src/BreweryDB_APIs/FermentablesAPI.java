@@ -14,125 +14,129 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import BeerRecipe.Fermentables;
+import user.User;
 
 public class FermentablesAPI {
 	
-	   public static List<Fermentables> getFermentablesAPI(){
-		   
-		   String urlToRead = "http://api.brewerydb.com/v2/fermentables?key=cc0090d9b6bfb3ff92bcb9cdaa15a599";
+	   public List<Fermentables> getFermentablesAPI(User thisUser){
 		   
 		   List<Fermentables> fermList = new ArrayList<Fermentables>();
 		   
-			try {
-				
-				StringBuilder result = new StringBuilder();
-				
-				URL url = new URL(urlToRead);
-				
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("GET");
-				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-				
-				String line;
-				
-				while ((line = rd.readLine()) != null) {
+		   for(int j = 1; j < 6; ++j){
+		   
+			   String urlToRead = "https://api.brewerydb.com/v2/fermentables?p=" + j + "&key=cc0090d9b6bfb3ff92bcb9cdaa15a599&format=json";
+ 
+				try {
 					
-					result.append(line);
-				}
-				rd.close();
-				
-				String JSON_DATA = result.toString();
-				
-				JSONObject obj = new JSONObject(JSON_DATA);
-				JSONArray geodata = obj.getJSONArray("data");
-				int n = geodata.length();
-							
-				for (int i = 0; i < n; ++i) {
+					StringBuilder result = new StringBuilder();
 					
-					Fermentables addFermentables = new Fermentables();
+					URL url = new URL(urlToRead);
 					
-					final JSONObject JasonFerment = geodata.getJSONObject(i);
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+					conn.setRequestMethod("GET");
+					BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 					
-					int fermpID = JasonFerment.getInt("id"); 
+					String line;
 					
-					String fermName = JasonFerment.getString("name");
-					
-					String fermCategory =  JasonFerment.getString("category");
-					
-					String fermCatagryDisplay = JasonFerment.getString("categoryDisplay");
-					
-					String fermDescription = null;
-					
-					if (JasonFerment.has("description")){
+					while ((line = rd.readLine()) != null) {
 						
-						fermDescription =JasonFerment.getString("description");
+						result.append(line);
+					}
+					rd.close();
+					
+					String JSON_DATA = result.toString();
+					
+					JSONObject obj = new JSONObject(JSON_DATA);
+					JSONArray geodata = obj.getJSONArray("data");
+					int n = geodata.length();
+								
+					for (int i = 0; i < n; ++i) {
+						
+						Fermentables addFermentables = new Fermentables();
+						
+						final JSONObject JasonFerment = geodata.getJSONObject(i);
+						
+						int fermpID = JasonFerment.getInt("id"); 
+						
+						String fermName = JasonFerment.getString("name");
+						
+						String fermCategory =  JasonFerment.getString("category");
+						
+						String fermCatagryDisplay = JasonFerment.getString("categoryDisplay");
+						
+						String fermDescription = null;
+						
+						if (JasonFerment.has("description")){
+							
+							fermDescription =JasonFerment.getString("description");
+							
+							fermDescription = fermDescription.replace("\n", "").replace("\r", "").replace("", "");						
+						}
+						
+						int fermCharID = 0;
+						
+						String fermCharName = null;
+						
+						String fermCharDescription = null;
+						
+						
+						/*
+						if (JasonFerment.has("characteristics")){
+							
+							fermCharID = JasonFerment.getJSONObject("characteristics").getInt("id");
+							
+							System.out.println(fermCharID);
+							
+							fermCharName = JasonFerment.getJSONObject("characteristics").getString("name"); 
+							
+							fermCharDescription = JasonFerment.getJSONObject("characteristics").getString("description");
+						}	
+						*/
+						
+						String fermCounryIsoCode = null;
+						
+						String fermCounryName = null;
+						
+						if (JasonFerment.has("country")){
+												
+							fermCounryIsoCode = JasonFerment.getJSONObject("country").getString("isoCode");
+							
+							fermCounryName = JasonFerment.getJSONObject("country").getString("displayName");
+	
+						}				
+						
+						addFermentables.setFermID(fermpID);
+						addFermentables.setFermName(fermName);
+						addFermentables.setCatagory(fermCategory);;
+						addFermentables.setCategoryDisplay(fermCatagryDisplay);
+						addFermentables.setDescription(fermDescription);
+						
+						addFermentables.setFermCharID(fermCharID);
+						addFermentables.setFermCharName(fermCharName);
+						addFermentables.setFermCharDescription(fermCharDescription);
+						
+						addFermentables.setCountryisoCode(fermCounryIsoCode);
+						addFermentables.setCountryName(fermCounryName);
+						
+						addFermentables.setCreatedByUSerID(thisUser.getUserID());
+						
+						fermList.add(addFermentables);
 						
 					}
-					
-					int fermCharID = 0;
-					
-					String fermCharName = null;
-					
-					String fermCharDescription = null;
-					
-					
-					/*
-					if (JasonFerment.has("characteristics")){
-						
-						fermCharID = JasonFerment.getJSONObject("characteristics").getInt("id");
-						
-						System.out.println(fermCharID);
-						
-						fermCharName = JasonFerment.getJSONObject("characteristics").getString("name"); 
-						
-						fermCharDescription = JasonFerment.getJSONObject("characteristics").getString("description");
-					}	
-					*/
-					
-					String fermCounryIsoCode = null;
-					
-					String fermCounryName = null;
-					
-					if (JasonFerment.has("country")){
-											
-						fermCounryIsoCode = JasonFerment.getJSONObject("country").getString("isoCode");
-						
-						fermCounryName = JasonFerment.getJSONObject("country").getString("displayName");
-
-					}				
-					
-					addFermentables.setFermCharID(fermCharID);
-					addFermentables.setFermCharName(fermName);
-					addFermentables.setCatagory(fermCategory);;
-					addFermentables.setCategoryDisplay(fermCatagryDisplay);
-					addFermentables.setDescription(fermDescription);
-					
-					addFermentables.setFermCharID(fermCharID);
-					addFermentables.setFermCharName(fermCharName);
-					addFermentables.setFermCharDescription(fermCharDescription);
-					
-					addFermentables.setCountryisoCode(fermCounryIsoCode);
-					addFermentables.setCountryName(fermCounryName);
-
-					
-					fermList.add(addFermentables);
-					
-				}
-		      
-		      
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			
-			return fermList;
-			
+			      
+			      
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+				
+		   }
+		   return fermList;
 	   }
-
 }

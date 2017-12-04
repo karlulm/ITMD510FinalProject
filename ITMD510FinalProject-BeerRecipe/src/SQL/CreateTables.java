@@ -30,7 +30,9 @@ public class CreateTables {
 			"CharacteristicsName VARCHAR(255),"  +
 			"CharacteristicsDescription VARCHAR(255), " +
 			"CountryIsoCode VARCHAR(255), " +
-			"CountryName VARCHAR(255) )";
+			"CountryName VARCHAR(255), "+
+			"CreatedByUSerID Int, " +
+			"AddedOn Date )";
 	
 	
 	

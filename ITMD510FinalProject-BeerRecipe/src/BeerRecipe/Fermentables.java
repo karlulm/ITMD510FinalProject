@@ -21,12 +21,10 @@ public class Fermentables {
 	
 	String countryisoCode;
 	String countryName;
-	
-	
-	
-	
-	
-	
+	int CreatedByUSerID;
+	String AddedOn;
+
+	/*
 	public int getNewFermID(Connection conn){
 		
 		int lastFermID = 0;
@@ -53,7 +51,11 @@ public class Fermentables {
 
 		 }catch(SQLException se){
 			 //Handle errors for JDBC
-			 se.printStackTrace();
+			 System.out.println("FirstEntry");
+			 
+			 lastFermID = 1000;
+			 
+//			 se.printStackTrace();
 			 
 		 }catch(Exception e){
 			 //Handle errors for Class.forName
@@ -62,37 +64,27 @@ public class Fermentables {
 		return lastFermID;
 	}
 	
-	
+	*/
 	
 	
 	
 	public String FermToSqlInsert(Fermentables newFermentables){
 		
-		String sqlInsertIntoUsersTable = "INSERT INTO k_ulm_FP_Fermentables VALUES(" +
+		String sqlInsertIntoFermTable = "INSERT INTO k_ulm_FP_Fermentables VALUES(" +
 				"'" + newFermentables.getFermID() + "', " +
 				"'" + newFermentables.getFermName() + "', " +
 				"'" + newFermentables.getCatagory() + "', " +
 				"'" + newFermentables.getCategoryDisplay()+ "', " + 
 				"'" + newFermentables.getDescription() + "', " +
-				"'" +
-				"'" +
-				"'" +
-				"'" +
-				"'" +
+				"'" + newFermentables.getFermCharID() + ", " +
+				"'" + newFermentables.getFermCharName() + ", " +
+				"'" + newFermentables.getFermCharDescription() + ", " +
+				"'" + newFermentables.getCreatedByUSerID() + ", " +
+				"'" + "Now() )";
 				
+		System.out.println(sqlInsertIntoFermTable);
 		
-		int fermCharID;
-		String fermCharName;
-		String fermCharDescription;
-		
-		String countryisoCode;
-		String countryName;
-				"NOW() ," +
-				"'" + newUser.getIsAdmin() + "')";
-				
-//		System.out.println(sqlInsertIntoUsersTable);
-		
-		return sqlInsertIntoUsersTable;
+		return sqlInsertIntoFermTable;
 	}
 	
 	
@@ -161,7 +153,18 @@ public class Fermentables {
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
 	}
-	
+	public int getCreatedByUSerID() {
+		return CreatedByUSerID;
+	}
+	public void setCreatedByUSerID(int createdByUSerID) {
+		CreatedByUSerID = createdByUSerID;
+	}
+	public String getAddedOn() {
+		return AddedOn;
+	}
+	public void setAddedOn(String addedOn) {
+		AddedOn = addedOn;
+	}
 
 
 }

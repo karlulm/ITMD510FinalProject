@@ -9,8 +9,34 @@ public class Hops {
 	
 	String countryisoCode;
 	String countryName;
+	
+	
+	public String HopsToSqlInsert(Fermentables newFermentables){
+		
+		String sqlInsertIntoFermTable = "INSERT INTO k_ulm_FP_Fermentables VALUES(" +
+				"'" + newFermentables.getFermID() + "', " +
+				"'" + newFermentables.getFermName() + "', " +
+				"'" + newFermentables.getCatagory() + "', " +
+				"'" + newFermentables.getCategoryDisplay()+ "', " + 
+				"'" + newFermentables.getDescription() + "', " +
+				"'" + newFermentables.getFermCharID() + ", " +
+				"'" + newFermentables.getFermCharName() + ", " +
+				"'" + newFermentables.getFermCharDescription() + ", " +
+				"'" + newFermentables.getCreatedByUSerID() + ", " +
+				"'" + "Now() )";
+				
+//		System.out.println(sqlInsertIntoFermTable);
+		
+		return sqlInsertIntoFermTable;
+	}
+	
+	
+	
+	
 
-
+	/*
+	 * Getters and Setters
+	 */
 	
 	public int getHopsID() {
 		return hopsID;

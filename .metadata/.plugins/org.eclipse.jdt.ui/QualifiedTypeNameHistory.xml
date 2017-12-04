@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="org.json.JSONTokener"/>
+<fullyQualifiedTypeName name="org.json.JSONObject"/>
+<fullyQualifiedTypeName name="org.json.JSONArray"/>
+<fullyQualifiedTypeName name="BreweryDB_APIs.HopsAPI"/>
+<fullyQualifiedTypeName name="BeerRecipe.Hops"/>
+<fullyQualifiedTypeName name="BreweryDB_APIs.FermentablesAPI"/>
+<fullyQualifiedTypeName name="BeerRecipe.Fermentables"/>
+<fullyQualifiedTypeName name="BreweryDB_APIs.YeastAPI"/>
+<fullyQualifiedTypeName name="BeerRecipe.Yeasts"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+</qualifiedTypeNameHistroy>

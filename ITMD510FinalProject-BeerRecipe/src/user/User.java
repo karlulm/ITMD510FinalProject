@@ -5,7 +5,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class User {
 	
@@ -70,6 +72,94 @@ public class User {
 		return sqlInsertIntoUsersTable;
 	}
 	
+	
+	
+	
+	public User getMyUSerInfo(String userName, Connection conn){
+		
+		User myLoggedInUser = new User();
+		
+		String query = "SELECT * FROM 510labs.k_ulm_fp_users WHERE UserName = '" + userName + "'";
+		 
+		
+		try{
+			
+			Statement stmt = null;
+		
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			
+			myLoggedInUser.setUserID(rs.getInt("UserID"));
+			myLoggedInUser.setUserName(rs.getString("UserName"));
+			myLoggedInUser.setUserEmail(rs.getString("UserEmail"));
+			myLoggedInUser.setUserFristName(rs.getString("UserFristName"));
+			myLoggedInUser.setUserLastName(rs.getString("UserLastName"));
+			myLoggedInUser.setIsAdmin(rs.getBoolean("IsAdmin"));
+			
+			
+			
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			se.printStackTrace();
+		 
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}
+		
+		return myLoggedInUser;
+		
+	}
+	
+	
+	public List<User> getUserList(Connection conn){
+		
+		List<User> allUsers = new ArrayList<User>();
+		
+		String query = "SELECT * FROM 510labs.k_ulm_fp_users";
+		 
+		Statement stmt;
+		
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			
+			boolean isEmpty = ! rs.next();
+			
+			System.out.println(isEmpty);
+
+			
+//			System.out.println("rs size " + rs.getFetchSize());
+			
+			while(rs.next()){
+				
+				
+				boolean isEmpty2 = ! rs.first();
+				
+				System.out.println(isEmpty2);
+				
+				User newUser = new User();
+				
+				newUser.setUserID(rs.getInt("UserID"));
+				
+				allUsers.add(newUser);
+				
+				System.out.println(rs.getString("UserID"));
+				
+			}
+
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return allUsers;
+		
+		
+	}
 
 	/*
 	 * Getters and Setter below
